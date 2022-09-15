@@ -1,0 +1,109 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "UB++",
+	"patterns": [{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#operators"
+		},
+
+		{
+			"include": "#predefined-types"
+		},
+		{
+			"include": "#known-functions"
+		},
+		{
+			"include": "#booleans"
+		},
+		{
+			"include": "#equalsSign"
+		},
+		{
+			"include": "#numbers"
+		}
+	],
+	"repository": {
+		"numbers": {
+			"name": "numbers",
+			"patterns": [{
+				"name": "constant.numeric",
+				"match": "-?\\d+(\\.\\d+)?"
+			}]
+			
+		},
+		"booleans": {
+			"name": "booleans",
+			"patterns": [{
+				"name": "constant.numeric",
+				"match": "\\b(wohr|falsch)\\b"
+			}]
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.aifc",
+				"match": "\\b(de|dr|d|heisst|stop|loss|definier e variable wo|solang|falls|suscht|mach|als)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.aifc",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [{
+					"name": "markup.italic",
+					"match": "\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}(:\\d{2}(\\.\\d+)?)?(([+-]\\d{2}(:\\d{2})?)|Z)?)?"
+				},
+				{
+					"name": "constant.character.escape.aifc",
+					"match": "\\\\."
+				}
+			]
+		},
+		"equalsSign": {
+			"patterns": [{
+				"name": "markup.quote",
+				"match": "\\b(mit em wert|isch)\\b"
+			}]
+
+		},
+		"comments": {
+			"name": "comment",
+			"begin": "/\\*",
+			"end": "\\*/",
+			"patterns": [{
+				"name": "comment.block",
+				"match": "\\\\."
+			}]
+		},
+		"operators": {
+			"name": "keyword.operator",
+			"patterns": [{
+				"name": "keyword.operator",
+				"match": "\\b(plus|minus|mol|durch|hoch|rest|gliich isch wie|isch gliich wie|ungliich isch wie|isch ungliich wie|isch kliiner als|kliiner isch als|isch kliiner oder gliich wie|kliiner oder gliich isch wie|isch grösser als|grösser isch als|isch grösser oder gliich wie|grösser oder glich isch wie)\\b"
+			}]
+		},
+		"predefined-types": {
+			"name": "entity.name.type",
+			"patterns": [{
+				"name": "entity.name.type",
+				"match": "\\b([Ww]ohretswärt|[Zz]ahl|[Zz]eicheketti)\\b"
+			}]
+		},
+		"known-functions": {
+			"name": "entity.name.function",
+			"patterns": [{
+				"name": "entity.name.function",
+				"match": "\\b(gib us|e frog)\\b"
+			}]
+		}
+
+	},
+	"scopeName": "source.ubpp"
+}

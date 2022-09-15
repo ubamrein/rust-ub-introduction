@@ -1,0 +1,22 @@
+definier e variable wo priimZahl heisst mit em wert e frog("Was füre Zahl wotsch teste?");
+definier e variable wo teiler heisst mit em wert 2;
+definier e variable wo primzahlWurzel heisst mit em wert priimZahl hoch 0.5;
+definier e variable wo derest heisst mit em wert -1;
+definier e variable wo priimZahlGfunde heisst mit em wert wohr;
+
+solang de teiler kliiner oder gliich isch wie primzahlWurzel mach {
+    falls de (priimZahl rest teiler) isch gliich wie 0 mach {
+        priimZahlGfunde isch falsch;
+        gib us ("Zum bispil isch: ");
+        gib us (teiler);
+        gib us ("en Teiler");
+        stop;
+    }
+    teiler isch teiler plus 1;
+}
+
+falls d priimZahlGfunde mach {
+    gib us ("S isch e priim zahl");
+} suscht {
+    gib us ("S isch also kei priim zahl");
+};

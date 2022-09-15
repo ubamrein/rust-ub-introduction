@@ -1,0 +1,97 @@
+file = { SOI ~ body ~ EOI }
+// comparison 
+equals = { "gliich isch wie" | "isch gliich wie" }
+not_equals = {"ungliich isch wie" | "isch ungliich wie"}
+smaller_than = { "isch kliiner als" | "kliiner isch als" | "<" }
+smaller_equals = { "isch kliiner oder gliich wie" | "kliiner oder gliich isch wie" }
+greater_than = { "isch grösser als" | "grösser isch als" }
+greater_equals = { "isch grösser oder gliich wie" | "grösser oder gliich isch wie" }
+
+and = { "und" }
+or = { "odr" }
+
+// control structure
+if_name = { "falls" }
+else_name = { "suscht" }
+while_name = {"solang"}
+break_keyword = { "stop" ~";" }
+do_name = {"mach"}
+
+// input/outpu
+
+print = { "gib us" }
+input = { "e frog" }
+
+// variable statement
+let_name = { "loss" | "definier e variable wo" }
+
+// literals 
+numeric_literal = { "-"? ~ NUMBER+ ~ "."? ~ (NUMBER+)?}
+true_literal = { "wohr" }
+false_literal = { "falsch" }
+boolean_literal = { true_literal | false_literal }
+string_quote = { "\"" }
+string_content = { (!"\"" ~ ANY)* }
+string_literal = { string_quote ~ string_content ~ string_quote}
+variable_name = ${ !keyword ~ (variable_char) ~ (variable_char | ASCII_DIGIT)* }
+variable_char = _{ ASCII_ALPHA | "ü" | "ä" | "ö" | "_"}
+
+comparison = { equals | not_equals | smaller_equals | smaller_than | greater_equals | greater_than }
+control = { if_name | else_name | while_name | do_name }
+
+keyword = { "mit em wert" | "isch" | "heisst" | if_name | else_name| do_name | and | or | mod_op | plus | minus | mul | div | cast_operator | break_keyword | boolean_literal | let_name | control | print | input | comparison }
+
+body = { (NEWLINE  | statement | expression  | break_keyword)* }
+body_no_expr = { (NEWLINE | statement)* }
+
+condition = { expression }
+
+print_statement = { print ~ "("? ~ expression ~ ")"? ~ ";"}
+
+input_expression = { input ~ "("? ~ rvalue ~")"?}
+
+while_statement = { while_name ~ ("de" |  "dr" | "d" | "(") ~ condition ~ ("mach"|")") ~ "{" ~ body ~"}" }
+
+if_statement = { !if_expression ~ if_name ~ ("de" |  "dr" | "d" | "(") ~ condition ~ ("mach"|")") ~ "{" ~ body ~"}" ~ (else_name ~ "{" ~ body ~"}")? ~ ";"? }
+
+if_return = { expression } 
+if_expression = { if_name ~ ("de" |  "dr" | "d" | "(") ~ condition ~ ("mach"|")") ~ "{" ~ body_no_expr ~ if_return  ~"}" ~ else_name ~ "{" ~ body_no_expr ~ if_return ~"}" }
+
+variable_statement = { let_name? ~ variable_name ~ ( ("heisst" ~ "mit em wert") | "=" | "isch") ~ expression ~ ";" }
+
+expression_statement = { expression ~ ";" }
+
+statement = { (print_statement | variable_statement | while_statement | if_statement | expression_statement) }
+
+rvalue = { variable_name|string_literal|numeric_literal|boolean_literal }
+
+rvalue_maybe_numeric = {variable_name | numeric_literal }
+rvalue_maybe_string = {(variable_name | string_literal)}
+parent_boolean_expression = { "(" ~ expression ~ ")" }
+boolean_expression = { (parent_boolean_expression | rvalue) ~ comparison ~  (parent_boolean_expression | rvalue) }
+
+bool = {"Wohretswärt" | "wohretswärt"}
+number = {"Zahl" | "zahl"}
+string = {"Zeicheketti" | "zeicheketti"}
+ty = {string | number | bool}
+cast_operator = { "als" }
+cast = { cast_operator ~ ty }
+
+expression = { (input_expression | if_expression | binary_num_expression | binary_string_expression | boolean_operation | boolean_expression | rvalue) ~ cast?}
+
+plus = { ("+" | "plus")  }
+minus =  { ("-" | "minus" )  }
+mul = { ("*" | "mol")  }
+div = {  ("/" | "durch")  }
+mod_op = {  ("%" | "rest")  }
+pow = {  ("**" | "hoch")  }
+
+binary_string_expression = { rvalue_maybe_string ~ (plus ~ rvalue_maybe_string)+}
+parent_expression = { "(" ~ binary_num_expression ~ ")" }
+binary_num_expression = { (parent_expression | rvalue_maybe_numeric) ~ ((pow | plus | minus  | mul | div | mod_op ) ~ (parent_expression | rvalue_maybe_numeric))+ }
+
+boolean_operation = { (boolean_expression | rvalue) ~ (( and | or ) ~ (boolean_expression | rvalue))+}
+
+
+WHITESPACE = _{ (" " | NEWLINE) }
+COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }

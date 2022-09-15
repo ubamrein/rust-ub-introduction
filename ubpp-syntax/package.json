@@ -1,0 +1,25 @@
+{
+    "name": "ubpp",
+    "displayName": "ubpp",
+    "description": "UB++",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.62.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "ubpp",
+            "aliases": ["ubpp", "ubpp"],
+            "extensions": ["ubpp"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "ubpp",
+            "scopeName": "source.ubpp",
+            "path": "./syntaxes/ubpp.tmLanguage.json"
+        }]
+    }
+}
