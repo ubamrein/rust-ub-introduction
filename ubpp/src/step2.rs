@@ -24,7 +24,7 @@ pub fn parse_body(body: Pair<Rule>) -> Vec<Token> {
                 let inner = pair.into_inner().next().unwrap();
                 let stmt = match inner.as_rule() {
                     Rule::variable_statement => as_var_assignment(inner),
-                    Rule::if_statement => as_if_statment(inner),
+                    Rule::if_statement => as_if_statement(inner),
                     Rule::print_statement => as_print_statement(inner),
                     Rule::expression_statement => Token::Statement(Statement::Expression(
                         as_expression(inner.into_inner().next().unwrap()),
@@ -81,7 +81,7 @@ fn as_print_statement(inner: Pair<Rule>) -> Token {
     Token::Statement(Statement::Print(string))
 }
 
-fn as_if_statment(inner: Pair<Rule>) -> Token {
+fn as_if_statement(inner: Pair<Rule>) -> Token {
     let mut inner = inner.into_inner().skip(1);
     let c = inner.next().unwrap().into_inner().next().unwrap();
     let condition = as_expression(c);
@@ -177,8 +177,8 @@ fn as_if_expression(inner: Pair<Rule>) -> Expression {
     let body = parse_body(inner.next().unwrap());
     let body_expression = as_expression(inner.next().unwrap().into_inner().next().unwrap());
     inner.next();
-    let mut else_body = parse_body(inner.next().unwrap());
-    let mut else_expression = Box::new(as_expression(
+    let else_body = parse_body(inner.next().unwrap());
+    let else_expression = Box::new(as_expression(
         inner.next().unwrap().into_inner().next().unwrap(),
     ));
 
