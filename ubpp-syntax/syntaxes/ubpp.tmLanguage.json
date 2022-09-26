@@ -48,12 +48,12 @@
 		},
 		"keywords": {
 			"patterns": [{
-				"name": "keyword.control.aifc",
+				"name": "keyword.control.ubpp",
 				"match": "\\b(de|dr|d|heisst|stop|loss|definier e variable wo|solang|falls|suscht|mach|als)\\b"
 			}]
 		},
 		"strings": {
-			"name": "string.quoted.double.aifc",
+			"name": "string.quoted.double.ubpp",
 			"begin": "\"",
 			"end": "\"",
 			"patterns": [{
@@ -61,7 +61,7 @@
 					"match": "\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}(:\\d{2}(\\.\\d+)?)?(([+-]\\d{2}(:\\d{2})?)|Z)?)?"
 				},
 				{
-					"name": "constant.character.escape.aifc",
+					"name": "constant.character.escape.ubpp",
 					"match": "\\\\."
 				}
 			]
