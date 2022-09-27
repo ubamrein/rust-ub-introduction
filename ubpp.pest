@@ -32,7 +32,7 @@ false_literal = { "falsch" }
 boolean_literal = { true_literal | false_literal }
 string_quote = { "\"" }
 string_content = { (!"\"" ~ ANY)* }
-string_literal = { string_quote ~ string_content ~ string_quote}
+string_literal = ${ string_quote ~ string_content ~ string_quote}
 variable_name = ${ !keyword ~ (variable_char) ~ (variable_char | ASCII_DIGIT)* }
 variable_char = _{ ASCII_ALPHA | "ü" | "ä" | "ö" | "_"}
 
@@ -88,7 +88,7 @@ pow = {  ("**" | "hoch")  }
 
 binary_string_expression = { rvalue_maybe_string ~ (plus ~ rvalue_maybe_string)+}
 parent_expression = { "(" ~ binary_num_expression ~ ")" }
-binary_num_expression = { (parent_expression | rvalue_maybe_numeric) ~ ((pow | plus | minus  | mul | div | mod_op ) ~ (parent_expression | rvalue_maybe_numeric))+ }
+binary_num_expression = { (parent_expression | rvalue) ~ ((pow | plus | minus  | mul | div | mod_op ) ~ (parent_expression | rvalue))+ }
 
 boolean_operation = { (boolean_expression | rvalue) ~ (( and | or ) ~ (boolean_expression | rvalue))+}
 

@@ -7,9 +7,7 @@ definier e variable wo priimZahlGfunde heisst mit em wert wohr;
 solang de teiler kliiner oder gliich isch wie primzahlWurzel mach {
     falls de (priimZahl rest teiler) gliich isch wie 0 mach {
         priimZahlGfunde isch falsch;
-        gib us ("Zum bispil isch: ");
-        gib us (teiler);
-        gib us ("en Teiler");
+        gib us ("Zum bispil isch: " +  teiler + " en Teiler");
         stop;
     }
     teiler isch teiler plus 1;

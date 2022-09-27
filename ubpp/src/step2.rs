@@ -70,7 +70,7 @@ fn consume_bin_num_op(pair: Pair<Rule>, climber: &PrecClimber<Rule>) -> Expressi
     match pair.as_rule() {
         Rule::binary_num_expression => climber.climb(pair.into_inner(), primary, infix),
         Rule::parent_expression => consume_bin_num_op(pair.into_inner().next().unwrap(), climber),
-        Rule::rvalue_maybe_numeric => get_literal(pair.into_inner()),
+        Rule::rvalue => get_literal(pair.into_inner()),
         p => unreachable!("{:?}", p),
     }
 }
@@ -268,6 +268,9 @@ fn get_literal(mut pair: Pairs<Rule>) -> Expression {
             element.as_str().trim().parse::<f64>().unwrap(),
         )),
         Rule::variable_name => Expression::Ident(element.as_str().to_string()),
+        Rule::string_literal => Expression::Atomic(Atomic::String(
+            element.into_inner().nth(1).unwrap().as_str().to_string(),
+        )),
         p => {
             println!("{:?}", p);
             unreachable!()

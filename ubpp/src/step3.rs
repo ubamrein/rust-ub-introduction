@@ -12,6 +12,9 @@ use crate::step1::{
 };
 
 impl Expression {
+    fn as_atomic(&self, global_scope: &mut HashMap<String, Expression>) -> Result<Atomic, String> {
+        eval_expression(self, global_scope)
+    }
     fn as_bool(&self, global_scope: &mut HashMap<String, Expression>) -> Result<bool, String> {
         let inner = eval_expression(self, global_scope)?;
         match inner {
@@ -284,9 +287,24 @@ fn eval_binary_op(
 ) -> Result<Atomic, String> {
     match num_op {
         crate::step1::BinaryOp::Plus { left, right } => {
-            let left = left.as_num(global_scope)?;
-            let right = right.as_num(global_scope)?;
-            Ok(Atomic::Number(left + right))
+            let left = left.as_atomic(global_scope)?;
+            let right = right.as_atomic(global_scope)?;
+            match (&left, &right) {
+                (Atomic::String(left), Atomic::String(right)) => {
+                    Ok(Atomic::String(left.to_string() + right))
+                }
+                (Atomic::Number(left), Atomic::String(right)) => {
+                    Ok(Atomic::String(left.to_string() + right))
+                }
+                (Atomic::String(left), Atomic::Number(right)) => {
+                    Ok(Atomic::String(left.to_string() + &right.to_string()))
+                }
+                (Atomic::Number(left), Atomic::Number(right)) => Ok(Atomic::Number(left + right)),
+                _ => Err(format!(
+                    "Could not evaluate expression {:?} + {:?}",
+                    left, right
+                )),
+            }
         }
         crate::step1::BinaryOp::Minus { left, right } => {
             let left = left.as_num(global_scope)?;
